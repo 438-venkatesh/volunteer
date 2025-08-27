@@ -1,0 +1,336 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login - Student Volunteer Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Apply Outfit Font */
+    body {
+        font-family: 'Outfit', sans-serif;
+        background-color: #f8f9fa;
+    }
+    
+    /* Authentication Page Container */
+    .auth-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    
+    /* Auth Card */
+    .auth-container {
+        width: 100%;
+        max-width: 900px;
+    }
+    
+    .auth-card {
+        display: flex;
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Left Section (Form) */
+    .auth-form-section {
+        width: 50%;
+        padding: 40px;
+    }
+    
+    .auth-header h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #2D336B;
+    }
+    
+    .auth-header p {
+        font-size: 1rem;
+        color: #555;
+    }
+    
+    /* Form Styling */
+    .form-group {
+        position: relative;
+        margin-bottom: 20px;
+    }
+    
+    .form-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #2D336B;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 10px 12px 10px 40px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+    
+    .form-control:focus {
+        border-color: #2D336B;
+        box-shadow: 0px 0px 8px rgba(45, 51, 107, 0.3);
+    }
+    
+    /* Password Toggle */
+    .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #2D336B;
+    }
+    
+    /* Remember Me & Forgot Password */
+    .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+    }
+    
+    .forgot-password {
+        color: #2D336B;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .forgot-password:hover {
+        text-decoration: underline;
+    }
+    
+    /* Login Button */
+    .btn-primary {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background: linear-gradient(135deg, #2D336B, #1C1C1C);
+        color: #ffffff;
+        border: none;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    .btn-primary i {
+        margin-right: 8px;
+    }
+    
+    .btn-primary:hover {
+        background-color: #1c264f;
+    }
+    
+    /* Divider */
+    .divider {
+        text-align: center;
+        margin: 20px 0;
+        font-weight: 600;
+        color: #666;
+        position: relative;
+    }
+    
+    .divider span {
+        background: #fff; /* Matches background for cleaner look */
+        padding: 0 12px;
+    }
+    
+    /* Social Buttons Container */
+    .social-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 12px; /* Added spacing between buttons */
+        margin-top: 15px;
+    }
+    
+    /* Social Buttons */
+    .btn-social {
+        flex: 1;
+        max-width: 250px; /* Prevents stretching */
+        min-width: 120px; /* Ensures equal size */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        white-space: nowrap;
+    }
+    
+    /* Social Icons */
+    .btn-social i {
+        margin-right: 6px;
+        font-size: 1rem;
+    }
+    
+    /* Google Button */
+    .btn-google {
+        background-color: #db4437;
+        color: #ffffff;
+    }
+    
+    .btn-google:hover {
+        background-color: #a93326;
+    }
+    
+    /* GitHub Button */
+    .btn-github {
+        background-color: #333;
+        color: #ffffff;
+    }
+    
+    .btn-github:hover {
+        background-color: #1a1a1a;
+    }
+    
+    /* Footer */
+    .auth-footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9rem;
+    }
+    
+    .auth-footer a {
+        color: #2D336B;
+        font-weight: 600;
+    }
+    
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Right Section (Animation) */
+    .auth-animation-section {
+        width: 50%;
+       background: linear-gradient(135deg, #2D336B, #1C1C1C);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card fade-in">
+            <div class="auth-form-section">
+                <div class="auth-header">
+                    <h2 class="text-black fw-bold">Welcome Back!!</h2>
+                    <p class="lead opacity-75 text-black fw-semibold">Log in to continue your learning journey</p>
+                </div>
+
+                <!-- Display error messages -->
+                {% if messages %}
+                    <div class="alert alert-danger">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <i class="fas fa-envelope form-icon"></i>
+                        <input type="email" class="form-control" name="email" placeholder="Email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fas fa-lock form-icon"></i>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                        <i class="fas fa-eye password-toggle"></i>
+                    </div>
+
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember_me">
+                            <label for="remember lead opacity-75 text-black fw-semibold">Remember me</label>
+                        </div>
+                        <a href="{% url 'authentication:password_reset' %}" class="forgot-password text-black">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>Or continue with</span>
+                </div>
+                
+                <div class="social-buttons">
+                    <button class="btn-social btn-google">
+                        <i class="fab fa-google"></i>
+                        <span>Google</span>
+                    </button>
+                    <button class="btn-social btn-github">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </button>
+                </div>
+                
+
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="{% url 'authentication:signup' %}">Sign up</a></p>
+                </div>
+            </div>
+
+            <div class="auth-animation-section">
+                <lottie-player
+                    src="https://assets3.lottiefiles.com/packages/lf20_4kx2q32n.json"
+                    background="transparent"
+                    speed="1"
+                    style="width: 100%; height: 100%;"
+                    loop
+                    autoplay>
+                </lottie-player>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<script>
+    // Password visibility toggle
+    document.querySelectorAll('.password-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            }
+        });
+    });
+
+    // Social login handlers
+    document.querySelector('.btn-google').addEventListener('click', function() {
+        window.location.href = '/auth/google/';
+    });
+
+    document.querySelector('.btn-github').addEventListener('click', function() {
+        window.location.href = '/auth/github/';
+    });
+</script>
+{% endblock %}

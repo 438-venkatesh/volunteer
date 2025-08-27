@@ -1,0 +1,649 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign Up - Student Volunteer Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-page {
+        min-height: 100vh;
+        display: flex;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .auth-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: auto;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .auth-card {
+        width: 100%;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+    }
+
+    .auth-form-section {
+        flex: 1;
+        padding: 3rem 4rem;
+        max-width: 500px;
+        overflow-y: auto;
+        max-height: 90vh;
+    }
+
+    .auth-animation-section {
+        flex: 1;
+        background: linear-gradient(135deg, #2D336B, #1C1C1C);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .auth-animation-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(76, 175, 80, 0.1), rgba(33, 150, 243, 0.1));
+        z-index: 1;
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .auth-header h2 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .auth-header p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+
+    .user-type-selector {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .type-btn {
+        flex: 1;
+        padding: 1rem;
+        border: 2px solid #e1e8ed;
+        border-radius: 10px;
+        background: white;
+        color: #333;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .type-btn i {
+        font-size: 1.5rem;
+    }
+
+    .type-btn.active {
+        border-color: #2D336B;
+        background: rgba(76, 175, 80, 0.1);
+        color: #2D336B;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1rem 3rem;
+        border: 2px solid #e1e8ed;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #2D336B;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        outline: none;
+    }
+
+    .form-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 1.2rem;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        cursor: pointer;
+        font-size: 1.2rem;
+    }
+
+    .profile-upload {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .upload-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto 1rem;
+        border: 3px solid #2D336B;
+    }
+
+    .upload-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+    }
+
+    .btn-upload {
+        padding: 0.75rem 1.5rem;
+        border: 2px solid #2D336B;
+        border-radius: 8px;
+        background: white;
+        color: #2D336B;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-upload:hover {
+        background: rgba(76, 175, 80, 0.1);
+    }
+
+    .upload-btn-wrapper input[type=file] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .conditional-fields {
+        display: none;
+    }
+
+    .conditional-fields.active {
+        display: block;
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(135deg, #2D336B, #1C1C1C);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #2D336B, #1C1C1C);
+        transform: translateY(-2px);
+    }
+
+    .divider {
+        text-align: center;
+        margin: 2rem 0;
+        position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: calc(50% - 30px);
+        height: 1px;
+        background: #e1e8ed;
+    }
+
+    .divider::before {
+        left: 0;
+    }
+
+    .divider::after {
+        right: 0;
+    }
+
+    .divider span {
+        background: white;
+        padding: 0 1rem;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .social-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .btn-social {
+        flex: 1;
+        padding: 0.75rem;
+        border: 2px solid #e1e8ed;
+        border-radius: 10px;
+        background: white;
+        color: #333;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .btn-social:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-google {
+        color: #DB4437;
+        border-color: #DB4437;
+    }
+
+    .btn-github {
+        color: #333;
+        border-color: #333;
+    }
+
+    .auth-footer {
+        text-align: center;
+    }
+
+    .auth-footer a {
+        color: #2D336B;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .auth-container {
+            padding: 1rem;
+        }
+
+        .auth-card {
+            flex-direction: column;
+        }
+
+        .auth-form-section {
+            padding: 2rem;
+            max-width: none;
+        }
+
+        .auth-animation-section {
+            display: none;
+        }
+
+        .user-type-selector {
+            flex-direction: column;
+        }
+    }
+
+    /* Custom scrollbar for the form section */
+    .auth-form-section::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .auth-form-section::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .auth-form-section::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #2D336B, #1C1C1C);
+        border-radius: 4px;
+    }
+
+    .auth-form-section::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #2D336B, #1C1C1C);
+    }
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card fade-in">
+            <div class="auth-form-section">
+                <div class="auth-header">
+                    <h2>Create Account</h2>
+                    <p>Join our community of learners and mentors</p>
+                </div>
+
+                <div class="user-type-selector">
+                    <button class="type-btn active" data-type="student">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Student</span>
+                    </button>
+                    <button class="type-btn" data-type="volunteer">
+                        <i class="fas fa-hands-helping"></i>
+                        <span>Volunteer</span>
+                    </button>
+                </div>
+
+                <!-- Student Signup Form -->
+                <form id="studentForm" method="POST" enctype="multipart/form-data" class="active">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_type" value="student">
+
+                    <div class="profile-upload">
+                        <div class="upload-preview">
+                            <img src="{% static 'images/default-avatar.png' %}" alt="Profile Preview" id="profilePreview">
+                        </div>
+                        <div class="upload-btn-wrapper">
+                            <button type="button" class="btn-upload">
+                                <i class="fas fa-camera"></i>
+                                <span>Upload Profile Picture</span>
+                            </button>
+                            <input type="file" name="profile_picture" accept="image/*">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fas fa-user form-icon"></i>
+                        <input type="text" class="form-control" name="full_name" placeholder="Full Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fas fa-envelope form-icon"></i>
+                        <input type="email" class="form-control" name="email" placeholder="Email Address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <div class="input-group">
+                            <select class="form-control" name="country_code" id="country_code">
+                                <option value="+91">India (+91)</option>
+                                <option value="+1">USA (+1)</option>
+                                <option value="+44">UK (+44)</option>
+                                <option value="+61">Australia (+61)</option>
+                                <!-- Add other country codes as needed -->
+                            </select>
+                            <input type="tel" class="form-control" name="phone" id="phone" placeholder="Phone Number" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fas fa-lock form-icon"></i>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                        <i class="fas fa-eye password-toggle"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fas fa-lock form-icon"></i>
+                        <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required>
+                        <i class="fas fa-eye password-toggle"></i>
+                    </div>
+
+                    <!-- Student-specific fields -->
+                    <div class="form-group">
+                        <i class="fas fa-university form-icon"></i>
+                        <input type="text" class="form-control" name="college" placeholder="College/University" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-graduation-cap form-icon"></i>
+                        <input type="text" class="form-control" name="course" placeholder="Course/Major" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Create Account</span>
+                    </button>
+                </form>
+
+                <!-- Volunteer Signup Form -->
+                <form id="volunteerForm" method="POST" enctype="multipart/form-data" style="display: none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_type" value="volunteer">
+
+                    <div class="profile-upload">
+                        <div class="upload-preview">
+                            <img src="{% static 'images/default-avatar.png' %}" alt="Profile Preview" id="profilePreviewVolunteer">
+                        </div>
+                        <div class="upload-btn-wrapper">
+                            <button type="button" class="btn-upload">
+                                <i class="fas fa-camera"></i>
+                                <span>Upload Profile Picture</span>
+                            </button>
+                            <input type="file" name="profile_picture" accept="image/*">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fas fa-user form-icon"></i>
+                        <input type="text" class="form-control" name="full_name" placeholder="Full Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fas fa-envelope form-icon"></i>
+                        <input type="email" class="form-control" name="email" placeholder="Email Address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <div class="input-group">
+                            <select class="form-control" name="country_code" id="country_code_volunteer">
+                                <option value="+91">India (+91)</option>
+                                <option value="+1">USA (+1)</option>
+                                <option value="+44">UK (+44)</option>
+                                <option value="+61">Australia (+61)</option>
+                                <!-- Add other country codes as needed -->
+                            </select>
+                            <input type="tel" class="form-control" name="phone" id="phone_volunteer" placeholder="Phone Number" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fas fa-lock form-icon"></i>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                        <i class="fas fa-eye password-toggle"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fas fa-lock form-icon"></i>
+                        <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required>
+                        <i class="fas fa-eye password-toggle"></i>
+                    </div>
+
+                    <!-- Volunteer-specific fields -->
+                    <div class="form-group">
+                        <i class="fas fa-briefcase form-icon"></i>
+                        <input type="text" class="form-control" name="occupation" placeholder="Current Occupation" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-star form-icon"></i>
+                        <input type="text" class="form-control" name="expertise" placeholder="Areas of Expertise" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Create Account</span>
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>Or sign up with</span>
+                </div>
+
+                <div class="social-buttons">
+                    <button class="btn-social btn-google">
+                        <i class="fab fa-google"></i>
+                        <span>Google</span>
+                    </button>
+                    <button class="btn-social btn-github">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </button>
+                </div>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="{% url 'authentication:login' %}">Login</a></p>
+                </div>
+            </div>
+
+            <div class="auth-animation-section">
+                <div class="student-animation show">
+                    <lottie-player
+                        src="https://assets3.lottiefiles.com/packages/lf20_kq5rGs.json"
+                        background="transparent"
+                        speed="1"
+                        style="width: 100%; height: 100%;"
+                        loop
+                        autoplay>
+                    </lottie-player>
+                </div>
+                <div class="volunteer-animation">
+                    <lottie-player
+                        src="https://lottie.host/3d3b7c4c-7d3d-4b63-9f8c-0d3d9e6c1b2e/mK9XqJwF8i.json"
+                        background="transparent"
+                        speed="1"
+                        style="width: 100%; height: 100%;"
+                        loop
+                        autoplay>
+                    </lottie-player>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
+<script>
+    // User type selection
+    document.querySelectorAll('.type-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Update buttons
+            document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            // Update forms
+            const type = this.dataset.type;
+            document.querySelectorAll('form').forEach(form => form.style.display = 'none'); // Hide all forms
+            document.getElementById(`${type}Form`).style.display = 'block'; // Show the selected form
+
+            // Update animations
+            document.querySelectorAll('.auth-animation-section > div').forEach(anim => {
+                anim.classList.remove('show');
+            });
+            document.querySelector(`.${type}-animation`).classList.add('show');
+
+            // Update hidden input
+            document.querySelector('input[name="user_type"]').value = type;
+        });
+    });
+
+    // Profile picture preview
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewId = e.target.closest('form').id === 'studentForm' ? 'profilePreview' : 'profilePreviewVolunteer';
+                    document.getElementById(previewId).src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    // Password visibility toggle
+    document.querySelectorAll('.password-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            }
+        });
+    });
+
+    // Social signup handlers
+    document.querySelector('.btn-google').addEventListener('click', function() {
+        window.location.href = '/auth/google/';
+    });
+
+    document.querySelector('.btn-github').addEventListener('click', function() {
+        window.location.href = '/auth/github/';
+    });
+
+    // Initialize the form display based on the active button
+    document.addEventListener('DOMContentLoaded', function() {
+        const activeButton = document.querySelector('.type-btn.active');
+        if (activeButton) {
+            const type = activeButton.dataset.type;
+            document.querySelectorAll('form').forEach(form => form.style.display = 'none'); // Hide all forms
+            document.getElementById(`${type}Form`).style.display = 'block'; // Show the selected form
+        }
+    });
+</script>
+{% endblock %}

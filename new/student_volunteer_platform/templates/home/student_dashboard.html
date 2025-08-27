@@ -1,0 +1,1174 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<!-- CSS for Modal -->
+
+<style>
+    :root {
+        --primary-color: #4a90e2;
+        --secondary-color: #2ecc71;
+        --background-light: #f8f9fa;
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark-mode {
+        --primary-color: #2d5a8e;
+        --secondary-color: #1a7a44;
+        --background-light: #1a1a1a;
+    }
+
+    .dashboard-container {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        min-height: 100vh;
+    }
+
+    .dashboard-card {
+        border: 2px solid #2D336B;
+        border-radius: 8px; /* Optional for rounded corners */
+        padding: 16px;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); /* Optional for a subtle shadow */
+    }
+    
+    .sidebar {
+        background: linear-gradient(90deg, #2D336B, #1C1C1C);
+
+        padding: 20px;
+        height: auto;
+    }
+    
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .sidebar-menu li {
+        margin-bottom: 45px;
+        margin-top: 13px;
+    }
+    
+    .btn-outline-light {
+        color: white;
+        border-color: white;
+    }
+    
+    .btn-outline-light:hover {
+        background-color: white;
+        color: #2D336B;
+    }
+    
+    {% comment %} .sidebar {
+        background: var(--primary-color);
+        padding: 2rem 1rem;
+        color: white;
+    } {% endcomment %}
+
+    {% comment %} .sidebar-menu {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar-menu li {
+        margin: 1rem 0;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: background 0.3s;
+    }
+
+    .sidebar-menu li:hover {
+        background: rgba(255, 255, 255, 0.1);
+    } {% endcomment %}
+
+    .main-content {
+        padding: 2rem;
+        background: var(--background-light);
+    }
+
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .dashboard-card1 {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 
+                    0 1px 3px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        max-width: 100%;
+    max-height: 100%;
+        overflow:hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        object-fit: contain;
+    }
+
+    .dashboard-card1::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .dashboard-card1::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .dashboard-card1::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    .dashboard-card1::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .dashboard-card1:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 
+                    0 2px 4px rgba(0, 0, 0, 0.12);
+    }
+    .dashboard-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 
+                    0 1px 3px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        height: 400px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dashboard-card::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .dashboard-card::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .dashboard-card::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    .dashboard-card::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 
+                    0 2px 4px rgba(0, 0, 0, 0.12);
+    }
+
+    {% comment %} .welcome-card {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+    } {% endcomment %}
+
+   
+    .mentor-card {
+        border: 2px solid #2D336B; /* Adds outer border */
+        max-height: 280px; /* Ensures it fits within the box */
+        padding: 15px; /* Adjust padding */
+        border-radius: 10px; /* Optional: Rounds the corners */
+    }
+    
+
+        .mentor-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        
+        .mentor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        .mentor-card {
+            max-height: 280px; /* Reduce height to fit */
+            padding: 15px; /* Reduce padding */
+        }
+        .mentor-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border: 4px solid #2D336B;
+            transition: border 0.3s ease-in-out;
+        }
+    
+        .mentor-name {
+            font-size: 1.25rem;
+            color: #333;
+        }
+    
+        .mentor-expertise {
+            font-size: 0.9rem;
+        }
+    
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px;
+            transition: background-color 0.3s ease-in-out;
+        }
+    
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+
+        .session-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+    
+        .session-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+        }
+    
+        .session-date {
+            font-size: 1.1rem;
+            color: #333;
+        }
+    
+        .session-mentor {
+            font-size: 0.95rem;
+        }
+    
+        .btn-success {
+            transition: background-color 0.3s ease-in-out;
+        }
+    
+        .btn-success:hover {
+            background-color: #2D336B;
+        }
+
+
+        .session-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+    
+        .session-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.12);
+            background: #f8f9fa;
+        }
+    
+        .join-btn {
+            transition: all 0.3s ease-in-out;
+        }
+    
+        .join-btn:hover {
+            background-color: #F9A826;
+            box-shadow: 0px 4px 8px rgba(40, 167, 69, 0.2);
+        }
+
+
+
+
+
+
+    .progress-bar {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background:white;
+        width: 50%;
+    }
+
+    {% comment %} .grid-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    } {% endcomment %}
+
+    .achievement-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: rgba(74, 144, 226, 0.1);
+        border-radius: 20px;
+        margin: 0.5rem;
+    }
+
+    .notification-item {
+        padding: 0.75rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .btn-primary {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        opacity: 0.9;
+    }
+
+    .welcome-content {
+        padding: 1rem;
+    }
+
+    .welcome-animation {
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .card-animation {
+        height: 150px;
+        margin-bottom: 1rem;
+    }
+
+    /* Forum Card Styles */
+    {% comment %} .forum-card {
+        background: #f8f9fa;
+    }
+
+    .forum-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .forum-filters {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .forum-item {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .forum-item-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .forum-title {
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+
+    .forum-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .forum-preview {
+        color: #495057;
+        margin: 0.5rem 0;
+    }
+
+    .vote-buttons {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .vote-btn {
+        background: none;
+        border: none;
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .vote-btn.upvote:hover { color: #28a745; }
+    .vote-btn.downvote:hover { color: #dc3545; }
+
+    .forum-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+    } {% endcomment %}
+
+    /* Notification Card Styles */
+    {% comment %} .notification-card {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .notification-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        transition: background-color 0.2s;
+    }
+
+    .notification-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .notification-icon {
+        font-size: 1.25rem;
+        margin-right: 1rem;
+        color: var(--primary-color);
+    }
+
+    .notification-content {
+        flex: 1;
+    }
+
+    .notification-title {
+        font-weight: bold;
+        margin-bottom: 0.25rem;
+    }
+
+    .notification-time {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .notification-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .btn-action {
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-mark-read {
+        background-color: #e9ecef;
+        color: #495057;
+    }
+
+    .btn-view {
+        background-color: var(--primary-color);
+        color: white;
+    } {% endcomment %}
+
+    /* Study Materials Card */
+    {% comment %} .materials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .material-item {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s;
+    }
+
+    .material-item:hover {
+        transform: translateY(-2px);
+    }
+
+    .material-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+    } 
+        
+    {% endcomment %}
+
+    .material-card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        padding: 20px;
+    }
+
+    .material-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .notification-item {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        background: #f8f9fa;
+        border-left: 5px solid gray;
+    }
+
+    .notification-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.12);
+        background: #ffffff;
+    }
+
+    .btn-view {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-view:hover {
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <ul class="sidebar-menu">
+            <li>
+                <button class="btn btn-outline-light w-100">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-outline-light w-100">
+                    <i class="fas fa-chalkboard-teacher"></i> Mentor Sessions
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-outline-light w-100">
+                    <i class="fas fa-book"></i> Study Materials
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-outline-light w-100">
+                    <i class="fas fa-comments"></i> Forums
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-outline-light w-100">
+                    <i class="fas fa-bell"></i> Notifications
+                </button>
+            </li>
+        </ul>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="input-group shadow-sm rounded-3" style="max-width: 400px;">
+                <span class="input-group-text  text-white" style="background: #2D336B;">
+                    <i class="fa fa-search"></i>
+                </span>
+                <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
+            </div>
+            
+            <div class="user-controls">
+                <button style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;"onclick="toggleDarkMode()">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <img src="{% static 'img/default-profile.png' %}" alt="Profile" class="profile-pic">
+            </div>
+        </div>
+
+        <!-- Welcome Card -->
+        <div class="dashboard-card1 welcome-card"      style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); color: white;" >
+            <div class="welcome-content">
+                <h2>Welcome back, {{ request.user.first_name }}!</h2>
+                <p>"Learning is not attained by chance, it must be sought for with ardor and attended to with diligence."</p>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <small>5/10 sessions completed this month</small>
+            </div>
+            <div class="welcome-animation">
+                <div id="welcomeAnimation"></div>
+            </div>
+        </div>
+
+        <!-- Grid Layout -->
+        <div class="container ">
+            <div class="dashboard-card p-5 shadow-lg rounded-4 bg-light">
+                {% comment %} <h3 class="text-center fw-bold mb-4">Recommended Mentors</h3> {% endcomment %}
+                <h3 class="text-center fw-bold mb-4" style="font-family: 'Outfit', sans-serif;">
+                    
+                    <span style="color: #2D336B;">Recommended </span> 
+                    <span style="color: black;">Mentors</span>
+                </h3>
+                <div id="mentorAnimation" class="card-animation"></div>
+                <div class="row g-4">
+                    {% for mentor in recommended_mentors %}
+                    <div class="col-md-4">
+                        <div class="card mentor-card border-0 shadow-sm rounded-3">
+                            <div class="card-body text-center">
+                                <img src="{{ mentor.profile_pic.url }}" alt="{{ mentor.name }}" class="mentor-img rounded-circle mb-3">
+                                <h4 class="mentor-name fw-semibold">{{ mentor.name }}</h4>
+                                <p class="mentor-expertise text-muted">{{ mentor.expertise }}</p>
+                                <button id="bookSessionButton" class="btn  w-100 fw-bold"  style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;"  onclick="openModal()">Book a Session</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        
+
+            <!-- Upcoming Sessions -->
+            <div class="dashboard-card p-4 shadow-lg rounded-4 bg-light">
+                <h3 class="text-center fw-bold mb-4" style="font-family: 'Outfit', sans-serif;">
+                    
+                    <span style="color: #2D336B;">Upcoming</span> 
+                    <span style="color: black;">Sessions</span>
+                </h3>
+                
+                
+                <div id="sessionAnimation" class="card-animation"></div>
+            
+                <div class="list-group">
+                    {% for session in upcoming_sessions %}
+                    <div class="list-group-item session-card d-flex justify-content-between align-items-center shadow-sm rounded-3 p-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar-alt  me-3 fs-4" style="color: #2D336B;"></i>
+                            <div>
+                                <p class="session-date fw-semibold mb-1 text-dark">{{ session.date }}</p>
+                                <p class="session-mentor text-muted mb-0">
+                                    with <strong style="color: #2D336B;">{{ session.mentor_name }}</strong>
+                                </p>
+                            </div>
+                        </div>
+                        <button class="btn fw-bold px-4 join-btn" 
+                        style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;" 
+                        onclick="openSessionModal('{{ session.meet_link }}')">
+                    Join Now
+                </button>
+                
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            
+            <!-- Study Materials -->
+            <div class="dashboard-card p-4 shadow-lg rounded-4 bg-light">
+                <h3 class="text-center fw-bold mb-4" style="font-family: 'Outfit', sans-serif;">
+                    
+                    <span style="color: #2D336B;">Study</span> 
+                    <span style="color: black;">Materials</span>
+                </h3>
+                
+                <!-- Filter Section -->
+                <div class="row g-2 mb-4">
+                    <div class="col-md-4">
+                        <select id="mentorFilter" class="form-select" onchange="filterMaterials()">
+                            <option value="">Select Mentor</option>
+                            {% for mentor in mentors %}
+                            <option value="{{ mentor.name }}">{{ mentor.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="subjectFilter" class="form-select" onchange="filterMaterials()">
+                            <option value="">Select Subject</option>
+                            {% for subject in subjects %}
+                            <option value="{{ subject }}">{{ subject }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="topicFilter" class="form-control" placeholder="Enter Topic" onkeyup="filterMaterials()">
+                    </div>
+                </div>
+            
+                <!-- Study Materials Grid -->
+                <div class="row g-4" id="materialsGrid">
+                    {% for material in study_materials %}
+                    <div class="col-md-4 study-material" data-mentor="{{ material.mentor }}" data-subject="{{ material.subject }}" data-topic="{{ material.topic }}">
+                        <div class="card material-card border-0 shadow-sm rounded-3">
+                            <div class="card-body text-center">
+                                <i class="bi bi-file-earmark-text text-primary fs-1"></i>
+                                <h5 class="fw-semibold mt-3">{{ material.topic }}</h5>
+                                <p class="text-muted">{{ material.subject }} - {{ material.mentor }}</p>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="{{ material.pdf_url }}" target="_blank" 
+   class="btn px-3" 
+   style="border: 2px solid #2D336B; color: #2D336B;">
+    View
+</a>
+                                    <a href="{{ material.pdf_url }}" download class="btn  px-3"  style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;" >Download</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Forum Highlights -->
+<!-- Forum Highlights -->
+<!-- Forum Highlights -->
+<div class="dashboard-card forum-card card shadow-lg p-4 bg-white rounded">
+    <div class="forum-header border-bottom pb-3 mb-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <h3 class="text-center fw-bold mb-4" style="font-family: 'Outfit', sans-serif;">
+                    
+                <span style="color: #2D336B;">Recent</span> 
+                <span style="color: black;">Discussions</span>
+            </h3>
+            
+            <div class="forum-filters d-flex flex-wrap gap-2">
+                <select class="form-select form-select-sm w-auto">
+                    <option selected>All Subjects</option>
+                    <option>Mathematics</option>
+                    <option>Physics</option>
+                    <option>Chemistry</option>
+                </select>
+                <select class="form-select form-select-sm w-auto">
+                    <option selected>Most Recent</option>
+                    <option>Most Upvoted</option>
+                    <option>Unanswered</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="forumAnimation" class="card-animation"></div>
+    
+    
+    <!-- Ask a Question -->
+    <div class="forum-ask">
+        <button class="btn  mb-3"  style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;"  onclick="toggleAskBox()">Ask a Question</button>
+        <div id="askBox" class="d-none">
+            <input type="text" class="form-control mb-2" id="askInput" placeholder="Ask a question...">
+            <button class="btn btn-primary" onclick="submitAsk()">Send</button>
+            <div class="mt-3"></div>
+        </div>
+    </div>
+
+    <div class="forum-items">
+        {% for question in forum_questions %}
+        <div class="forum-item card p-3 mb-3 shadow-sm border rounded">
+            <div class="forum-item-header d-flex align-items-center mb-2">
+                <img src="https://ui-avatars.com/api/?name={{ question.student_name }}" 
+                     alt="{{ question.student_name }}" 
+                     class="rounded-circle me-2 border" width="40">
+                <div class="forum-meta">
+                    <span class="fw-bold">{{ question.student_name }}</span>
+                    <span class="text-muted small">{{ question.time_ago }}</span>
+                </div>
+            </div>
+            <div class="forum-title fw-semibold text-dark mb-1">{{ question.title }}</div>
+            <div class="forum-preview text-muted mb-3">{{ question.preview }}</div>
+
+            <div class="forum-actions d-flex flex-column gap-2">
+                <!-- Vote Buttons -->
+                <div class="vote-buttons d-flex gap-2">
+                    <button class="btn btn-outline-success btn-sm">⬆️ {{ question.upvotes }}</button>
+                    <button class="btn btn-outline-danger btn-sm">⬇️ {{ question.downvotes }}</button>
+                </div>
+
+                <!-- Reply Button -->
+                <button class="btn  btn-sm flex-fill"  style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;"  onclick="toggleReplyBox('{{ question.id }}')">Reply</button>
+
+                <!-- Reply Input Box (Initially Hidden) -->
+                <div id="replyBox-{{ question.id }}" class="d-none mt-2">
+                    <input type="text" class="form-control mb-2" id="replyInput-{{ question.id }}" placeholder="Write your reply...">
+                    <button class="btn btn-secondary" onclick="submitReply('{{ question.id }}')">Send</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    // Toggle Reply Input Box for a Question
+    function toggleReplyBox(questionId) {
+        let replyBox = document.getElementById(`replyBox-${questionId}`);
+        replyBox.classList.toggle("d-none");
+    }
+
+    // Submit Reply
+    function submitReply(questionId) {
+        let replyText = document.getElementById(`replyInput-${questionId}`).value;
+        if (replyText.trim() === "") {
+            alert("Please enter a reply.");
+            return;
+        }
+        alert("Reply Sent: " + replyText); // Replace with backend API call
+        document.getElementById(`replyInput-${questionId}`).value = ""; // Clear input
+    }
+
+    // Toggle Ask Input Box
+    function toggleAskBox() {
+        let askBox = document.getElementById("askBox");
+        askBox.classList.toggle("d-none");
+    }
+
+    // Submit Ask Question
+    function submitAsk() {
+        let askText = document.getElementById("askInput").value;
+        if (askText.trim() === "") {
+            alert("Please enter a question.");
+            return;
+        }
+        alert("Question Asked: " + askText); // Replace with backend API call
+        document.getElementById("askInput").value = ""; // Clear input
+    }
+</script>
+
+
+            <!-- Notifications -->
+            <div class="dashboard-card notification-card p-4 shadow-lg rounded-4 bg-white">
+                <h3 class="text-center fw-bold mb-4 text-black" >
+                    <i class="fa fa-bell" style="color: #2D336B;"></i> Notifications
+                </h3>
+                
+                <div id="notificationsAnimation" class="card-animation"></div>
+            
+                <div class="notification-list">
+                    {% for notification in notifications %}
+                    <div class="notification-item d-flex align-items-center p-3 mb-2 rounded-3 shadow-sm">
+                        <div class="notification-icon me-3 fs-4">
+                            {% if notification.type == 'session' %}
+                                <i class="fa fa-calendar-alt" style="color: #2D336B;"></i>
+                            {% elif notification.type == 'forum' %}
+                                <i class="fa fa-comments" style="color: #2D336B;"></i>
+                            {% else %}
+                                <i class="fa fa-book" style="color: #2D336B;"></i>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="notification-content flex-grow-1">
+                            <div class="notification-title fw-semibold text-dark">{{ notification.message }}</div>
+                            <div class="notification-time text-muted small">{{ notification.time }}</div>
+                            <div class="notification-actions mt-2">
+                                <button class="btn btn-sm  btn-mark-read" style="border: 2px solid #2D336B; color: #2D336B;">Mark as Read</button>
+                                {% if notification.type == 'session' %}
+                                <button class="btn btn-sm  btn-view" style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;">Join Session</button>
+                                {% elif notification.type == 'forum' %}
+                                <button class="btn btn-sm btn-info btn-view" style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;">View Reply</button>
+                                {% else %}
+                                <button class="btn btn-sm  btn-view" style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;">Open Material</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Achievements -->
+            <div class="dashboard-card">
+                <h3 class="text-center fw-bold mb-4" style="font-family: 'Outfit', sans-serif;">
+                    
+                    <span style="color: #2D336B;">Your </span> 
+                    <span style="color: black;">Achievements</span>
+                </h3>
+                <div id="achievementsAnimation" class="card-animation"></div>
+                <div class="achievement-badges">
+                    <span class="achievement-badge">
+                        <i class="fas fa-star"></i> Quick Learner
+                    </span>
+                    <span class="achievement-badge">
+                        <i class="fas fa-award"></i> Top Contributor
+                    </span>
+                </div>
+            </div>
+
+
+            <div id="sessionModal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content p-4 rounded-4">
+                        <h4 class="modal-title text-primary">Join Your Session</h4>
+                        <hr />
+            
+                        <div id="meetLinkContainer">
+                            <p class="text-dark">Click the button below to join:</p>
+                            <a id="meetLink" href="#" target="_blank" class="btn btn-primary fw-bold">Join Class</a>
+                        </div>
+            
+                        <div id="requestMentorContainer" class="mt-3" style="display: none;">
+                            <p class="text-danger fw-bold">No meeting link available! Request your mentor.</p>
+                            <textarea class="form-control" id="requestMessage" rows="3" placeholder="Write your request..."></textarea>
+                            <button class="btn btn-warning mt-2 fw-bold" onclick="requestMentor()">Request Mentor</button>
+                        </div>
+            
+                        <button class="btn btn-secondary mt-3" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Structure -->
+<div id="bookSessionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="bookSessionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookSessionModalLabel">Book a Mentorship Session</h5>
+                <button type="button" class="close" onclick="closeModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="subject">Subject:</label>
+                        <select id="subject" name="subject" class="form-control">
+                            <option value="Math">Math</option>
+                            <option value="Science">Science</option>
+                            <!-- Add more subjects as needed -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mentor">Preferred Mentor:</label>
+                        <select id="mentor" name="mentor" class="form-control">
+                            <option value="mentor1">Mentor 1</option>
+                            <option value="mentor2">Mentor 2</option>
+                            <!-- Dynamically populate mentors -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateTime">Date & Time:</label>
+                        <input type="datetime-local" id="dateTime" name="dateTime" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Session Mode:</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="video" name="sessionMode" value="Video">
+                            <label class="form-check-label" for="video">Video</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="chat" name="sessionMode" value="Chat">
+                            <label class="form-check-label" for="chat">Chat</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="call" name="sessionMode" value="Call">
+                            <label class="form-check-label" for="call">Call</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Additional Notes:</label>
+                        <textarea id="notes" name="notes" class="form-control" placeholder="Any special requests..."></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Confirm Booking</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Lottie Script -->
+ <!-- jQuery, Popper.js, and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.14/lottie.min.js"></script>
+<script>
+    // Dark mode toggle
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+    }
+
+    // Initialize Lottie animations
+    const welcomeAnimation = lottie.loadAnimation({
+        container: document.getElementById('welcomeAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets2.lottiefiles.com/packages/lf20_k27t2gov.json' // Student welcome animation
+    });
+
+    const mentorAnimation = lottie.loadAnimation({
+        container: document.getElementById('mentorAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets9.lottiefiles.com/packages/lf20_w51pcehl.json' // Teacher/mentor animation
+    });
+
+    const sessionAnimation = lottie.loadAnimation({
+        container: document.getElementById('sessionAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets1.lottiefiles.com/packages/lf20_4qiecwUmBS.json' // Calendar animation
+    });
+
+    const materialsAnimation = lottie.loadAnimation({
+        container: document.getElementById('materialsAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets2.lottiefiles.com/packages/lf20_4kx2q32n.json' // New study materials animation
+    });
+
+    const forumAnimation = lottie.loadAnimation({
+        container: document.getElementById('forumAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets8.lottiefiles.com/packages/lf20_ltbqacam.json' // Discussion animation
+    });
+
+    const achievementsAnimation = lottie.loadAnimation({
+        container: document.getElementById('achievementsAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets8.lottiefiles.com/packages/lf20_ltbqacam.json' // Achievement animation
+    });
+
+    const notificationsAnimation = lottie.loadAnimation({
+        container: document.getElementById('notificationsAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets3.lottiefiles.com/packages/lf20_Cc8Bpg.json' // Notification animation
+    });
+
+    // Add hover effects to animations
+    const animationContainers = document.querySelectorAll('.card-animation');
+    animationContainers.forEach(container => {
+        container.addEventListener('mouseenter', () => {
+            const animation = lottie.getRegisteredAnimations().find(anim => 
+                anim.wrapper === container.querySelector('svg')
+            );
+            if (animation) {
+                animation.setSpeed(1.5);
+            }
+        });
+
+        container.addEventListener('mouseleave', () => {
+            const animation = lottie.getRegisteredAnimations().find(anim => 
+                anim.wrapper === container.querySelector('svg')
+            );
+            if (animation) {
+                animation.setSpeed(1);
+            }
+        });
+    });
+</script>
+<!-- JavaScript for Modal Functionality -->
+<script>
+    function openSessionModal(meetLink) {
+        const meetLinkContainer = document.getElementById('meetLinkContainer');
+        const requestMentorContainer = document.getElementById('requestMentorContainer');
+        const meetLinkElement = document.getElementById('meetLink');
+    
+        if (meetLink) {
+            meetLinkElement.href = meetLink;
+            meetLinkContainer.style.display = 'block';
+            requestMentorContainer.style.display = 'none';
+        } else {
+            meetLinkContainer.style.display = 'none';
+            requestMentorContainer.style.display = 'block';
+        }
+    
+        new bootstrap.Modal(document.getElementById('sessionModal')).show();
+    }
+    
+    function requestMentor() {
+        const requestMessage = document.getElementById('requestMessage').value;
+        
+        if (requestMessage.trim() === '') {
+            alert("Please enter a message before sending the request.");
+            return;
+        }
+    
+        alert("Request sent to mentor: " + requestMessage);
+        new bootstrap.Modal(document.getElementById('sessionModal')).hide();
+    }
+    
+
+
+
+
+    function joinSession() {
+        alert("Redirecting to session...");
+        // Add actual redirection logic here
+    }
+    function openModal() {
+        $('#bookSessionModal').modal('show'); // Use jQuery to show the modal
+    }
+    
+    function closeModal() {
+        $('#bookSessionModal').modal('hide'); // Use jQuery to hide the modal
+    }
+    
+    document.getElementById("bookingForm").onsubmit = function(event) {
+        event.preventDefault();
+        // Handle form submission logic here
+        closeModal();
+    };
+    </script>
+    <script>
+        function filterMaterials() {
+            let mentor = document.getElementById("mentorFilter").value.toLowerCase();
+            let subject = document.getElementById("subjectFilter").value.toLowerCase();
+            let topic = document.getElementById("topicFilter").value.toLowerCase();
+            
+            let materials = document.querySelectorAll(".study-material");
+    
+            materials.forEach(material => {
+                let materialMentor = material.getAttribute("data-mentor").toLowerCase();
+                let materialSubject = material.getAttribute("data-subject").toLowerCase();
+                let materialTopic = material.getAttribute("data-topic").toLowerCase();
+    
+                if ((mentor === "" || materialMentor.includes(mentor)) &&
+                    (subject === "" || materialSubject.includes(subject)) &&
+                    (topic === "" || materialTopic.includes(topic))) {
+                    material.style.display = "block";
+                } else {
+                    material.style.display = "none";
+                }
+            });
+        }
+
+
+
+        document.querySelectorAll('.btn-mark-read').forEach(button => {
+            button.addEventListener('click', function() {
+                this.closest('.notification-item').style.opacity = "0.5";
+                this.textContent = "Read";
+                this.disabled = true;
+            });
+        });
+    </script>
+{% endblock %}

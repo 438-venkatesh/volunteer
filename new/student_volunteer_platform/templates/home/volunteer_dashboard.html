@@ -1,0 +1,799 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #7b2cbf;
+        --secondary-color: #ff8500;
+        --background-light: #f8f9fa;
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark-mode {
+        --primary-color: #5a1a8b;
+        --secondary-color: #cc6a00;
+        --background-light: #1a1a1a;
+    }
+
+    .dashboard-container {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        background: linear-gradient(90deg, #2D336B, #1C1C1C);
+
+        padding: 2rem 1rem;
+        color: white;
+    }
+  .sidebar-menu li {
+        margin-bottom: 45px;
+        margin-top: 13px;
+    }
+    
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar-menu li {
+        margin: 1rem 0;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: background 0.3s;
+    }
+
+    .sidebar-menu li:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .main-content {
+        padding: 2rem;
+        background: var(--background-light);
+    }
+
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .dashboard-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--card-shadow);
+    }
+
+    .welcome-card {
+        background: linear-gradient(135deg, #2D336B, #1C1C1C);
+
+        color: white;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: stretch;
+        min-height: 250px;
+    }
+
+    .welcome-content {
+        flex: 1;
+        padding: 2rem;
+    }
+
+    .welcome-animation {
+        width: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1.5rem;
+        border-radius: 12px;
+        transition: transform 0.2s;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    {% comment %} .request-card {
+        border-bottom: 1px solid #eee;
+        padding: 1rem 0;
+    }
+
+    .request-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+    } {% endcomment %}
+
+
+
+    /* Dashboard Card */
+    .dashboard-card {
+        background-color: transparent; /* Remove background */
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .dashboard-card:hover {
+        transform: scale(1.02);
+    }
+    
+    /* Card Header (No Background) */
+    .card-header {
+        background-color: transparent !important; /* Ensure it's transparent */
+        border-bottom: 2px solid #ddd;
+    }
+    
+    /* Card Animation (Fixed Size) */
+    #pendingRequestsAnimation {
+        max-height: 150px;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+    
+    /* Request Card */
+    .request-card {
+        background-color: #ffffff; /* Keep request cards white */
+        transition: all 0.3s ease-in-out;
+    }
+    
+    .request-card:hover {
+        background-color: #f5f5f5;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Buttons */
+    .btn-success:hover {
+        background-color: #218838;
+    }
+    
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .request-card {
+            text-align: center;
+        }
+    
+        .d-flex.gap-2 {
+            flex-direction: column;
+        }
+    }
+    
+
+/* Responsive */
+@media (max-width: 768px) {
+    .request-card {
+        text-align: center;
+    }
+
+    .d-flex.gap-2 {
+        flex-direction: column;
+    }
+}
+
+    .btn-accept {
+        background: var(--secondary-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .btn-decline {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    {% comment %} .upload-zone {
+        border: 2px dashed var(--primary-color);
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        margin: 1rem 0;
+    } {% endcomment %}
+
+
+  
+
+/* Upload Zone */
+.upload-zone {
+    border: 2px dashed var(--primary-color, #007bff);
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    padding: 30px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.upload-zone:hover {
+    background-color: #e9ecef;
+    border-color: #0056b3;
+}
+
+/* Uploaded File List */
+.uploaded-file {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    margin-top: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.uploaded-file:hover {
+    background-color: #e9ecef;
+}
+
+/* File Icons */
+.uploaded-file i {
+    color: var(--primary-color, #007bff);
+}
+
+    .leaderboard-item {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .rank {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+
+    .notification-item {
+        padding: 0.75rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .btn-primary {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        opacity: 0.9;
+    }
+
+    .card-header {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+
+
+
+    
+/* Session Item */
+.session-item {
+    background-color: #ffffff;
+    transition: all 0.3s ease-in-out;
+}
+
+.session-item:hover {
+    background-color: #f5f5f5;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Buttons */
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .session-item {
+        text-align: center;
+    }
+}
+
+
+
+/* Forum Item */
+.forum-item {
+    background-color: #f8f9fa;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.forum-item:hover {
+    background-color: #e9ecef;
+}
+
+/* Answer Button */
+.answer-btn {
+    transition: all 0.3s ease-in-out;
+}
+
+.answer-btn:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+    transition: 0.3s ease-in-out;
+}
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Sidebar -->
+   <nav class="sidebar">
+        <ul class="sidebar-menu">
+            <li>
+                <button class="btn btn-outline-light w-100">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-outline-light w-100">
+                    <i class="fas fa-chalkboard-teacher"></i> Mentor Sessions
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-outline-light w-100">
+                    <i class="fas fa-book"></i> Study Materials
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-outline-light w-100">
+                    <i class="fas fa-comments"></i> Forums
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-outline-light w-100">
+                    <i class="fas fa-bell"></i> Notifications
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="user-controls">
+                <button style="background: linear-gradient(135deg, #2D336B, #1C1C1C);" onclick="toggleDarkMode()">
+                    <i class="fas fa-moon"  ></i>
+                </button>
+                <img src="{% static 'img/default-profile.png' %}" alt="Profile" class="profile-pic">
+            </div>
+        </div>
+
+        <!-- Welcome Card -->
+        <div class="dashboard-card welcome-card">
+            <div class="welcome-content">
+                <h2>Welcome back, {{ request.user.first_name }}!</h2>
+                <p class="welcome-subtitle">Making a difference in students' lives</p>
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <div class="stat-value">{{ total_sessions }}</div>
+                        <div class="stat-label">Sessions Conducted</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">{{ students_helped }}</div>
+                        <div class="stat-label">Students Helped</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">{{ rating }}</div>
+                        <div class="stat-label">Average Rating</div>
+                    </div>
+                </div>
+            </div>
+            <div class="welcome-animation">
+                <div id="welcomeAnimation"></div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Pending Requests -->
+            <div class="dashboard-card card shadow-lg border-0 rounded-4">
+                <!-- Card Header (No Background Color) -->
+                <div class="card-header border-bottom d-flex justify-content-between align-items-center">
+                    <h3 class="text-center fw-bold mb-4" style="font-family: 'Outfit', sans-serif;">
+                    
+                        <span style="color: #2D336B;">Pending</span> 
+                        <span style="color: black;">Requests</span>
+                    </h3>
+                    <i class="fa fa-exclamation-circle fs-4 text-warning"></i>
+                </div>
+            
+                <!-- Animation Container (Fixed Size) -->
+                <div id="pendingRequestsAnimation" class="card-animation"></div>
+            
+                <!-- Card Body -->
+                <div class="card-body">
+                    {% for request in pending_requests %}
+                    <div class="request-card border rounded-3 p-3 mb-3 shadow-sm">
+                        <h4 class="fw-bold text-dark"><i class="fa fa-user me-2 " style="color: #2D336B;"></i> {{ request.student_name }}</h4>
+                        <p class="mb-2 text-muted">
+                            <i class="fa fa-book me-1 text-secondary"></i> <strong>{{ request.subject }}</strong> - 
+                            <i class="fa fa-clock me-1 text-secondary"></i> {{ request.session_type }}
+                        </p>
+                        <div class="d-flex gap-2">
+                            <button class="btn  btn-sm fw-bold " style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;">
+                                <i class="fa fa-check me-1"></i> Accept
+                            </button>
+                            <button class="btn  btn-sm fw-bold" style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;">
+                                <i class="fa fa-times me-1"></i> Decline
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+
+            <!-- Upcoming Sessions -->
+            <div class="dashboard-card card shadow-lg border-0 rounded-4">
+                <!-- Card Header -->
+                <div class="card-header border-bottom d-flex justify-content-between align-items-center bg-white">
+                    <h3 class="text-center fw-bold mb-4" style="font-family: 'Outfit', sans-serif;">
+                    
+                        <span style="color: #2D336B;">Upcoming</span> 
+                        <span style="color: black;">Sessions</span>
+                    </h3>
+                    <i class="fa fa-clock fs-4 text-warning"></i>
+                </div>
+            
+                <!-- Animation (Fixed Size) -->
+                <div id="upcomingSessionsAnimation" class="card-animation"></div>
+            
+                <!-- Card Body -->
+                <div class="card-body">
+                    {% for session in upcoming_sessions %}
+                    <div class="session-item border rounded-3 p-3 mb-3 shadow-sm">
+                        <p class="mb-2 text-muted">
+                            <i class="fa fa-calendar-day me-1 text-secondary"></i> 
+                            <strong>{{ session.date }}</strong> with 
+                            <i class="fa fa-user me-1 " style="color: #2D336B;"></i> {{ session.student_name }}
+                        </p>
+            
+                        <!-- Show Join Button if GMeet link is available -->
+                        {% if session.meet_link %}
+                        <a href="{{ session.meet_link }}" class="btn btn-success btn-sm fw-bold" target="_blank">
+                            <i class="fa fa-video me-1" style="color: #2D336B;"></i> Join Now
+                        </a>
+                        {% else %}
+                        <!-- Volunteers Create Meet Link -->
+                        <button class="btn  btn-sm fw-bold"  style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;" onclick="createMeetLink('{{ session.id }}')">
+                            <i class="fa fa-plus-circle me-1" style="color: #2D336B;"></i> Create Meet Link
+                        </button>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+
+            <!-- Upload Study Materials -->
+            <div class="dashboard-card card shadow-lg border-0 rounded-4">
+                <!-- Card Header -->
+                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                    <h3 class="text-center fw-bold mb-4" style="font-family: 'Outfit', sans-serif;">
+                    
+                        <span style="color: #2D336B;">Upload</span> 
+                        <span style="color: black;">Materials</span>
+                    </h3>
+                    
+                </div>
+            
+                <!-- Animation Placeholder -->
+                <div id="uploadMaterialsAnimation" class="card-animation"></div>
+            
+                <!-- Upload Zone -->
+                <div class="card-body">
+                    <div id="dropZone" class="upload-zone text-center p-4">
+                        <i class="fas fa-cloud-upload-alt display-4  mb-3" style="color: #2D336B;"></i>
+                        <p class="text-muted">Drag & drop files here or click to upload</p>
+                        <input type="file" id="fileInput" multiple hidden>
+                        <button class="btn  mt-2 upload-btn" style="border: 2px solid #2D336B; color: #2D336B;">
+                            <i class="fa fa-folder-open me-2" style="color: #2D336B;"></i> Browse Files
+                        </button>
+                    </div>
+            
+                    <!-- Uploaded Files List -->
+                    <div id="fileList" class="mt-3"></div>
+                </div>
+            </div>
+            
+
+            <!-- Forum Moderation -->
+            <div class="dashboard-card card shadow-lg border-0 rounded-4">
+                <!-- Card Header -->
+                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">
+                        <i class="fa fa-question-circle me-2 " style="color: #2D336B;"></i> Forum Questions
+                    </h3>
+                    <i class="fa fa-comments fs-4 text-secondary"></i>
+                </div>
+            
+                <!-- Animation Placeholder -->
+                <div id="forumAnimation" class="card-animation"></div>
+            
+                <!-- Forum Questions List -->
+                <div class="card-body">
+                    {% for question in forum_questions %}
+                    <div class="forum-item d-flex align-items-center justify-content-between p-3 mb-2 rounded shadow-sm">
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-comment-dots  fs-5 me-3" style="color: #2D336B;"></i>
+                            <p class="mb-0 fw-semibold text-dark">{{ question.title }}</p>
+                        </div>
+                        <button class="btn  btn-sm answer-btn"  style="border: 2px solid #2D336B; color: #2D336B;">
+                            <i class="fa fa-reply me-1" style="color: #2D336B;"></i> Answer Now
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+
+            <!-- Volunteer Recognition -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fa-solid fa-chalkboard-teacher me-2" style="color: #2D336B;" ></i>
+                    <div></div>
+                    <div></div>
+                    <h3 class="mb-0 text-black">Top Mentors</h3>
+                </div>
+                <div></div>
+                <div id="leaderboardAnimation" class="card-animation"></div>
+                <div class="card-body p-3">
+                    <ul class="list-group list-group-flush">
+                        {% for mentor in top_mentors %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="badge  me-3 p-2 px-3 fs-6" style=" background: linear-gradient(135deg, #2D336B, #1C1C1C); border-color: #2D336B; color: white;">#{{ forloop.counter }}</span>
+                                <span class="fw-semibold">{{ mentor.name }}</span>
+                            </div>
+                            <span class="text-muted">
+                                <i class="fa-solid fa-star text-warning"></i> {{ mentor.points }} points
+                            </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+
+            <!-- Notifications -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-light d-flex align-items-center">
+                    <i class="fa-solid fa-bell me-2" style="color: #2D336B;"></i>
+                    <h3 class="mb-0 text-black">Notifications</h3>
+                </div>
+                <div id="notificationsAnimation" class="card-animation"></div>
+                <div class="card-body p-3">
+                    <ul class="list-group list-group-flush">
+                        {% for notification in notifications %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fa-solid fa-circle-info text-info me-2" style="color: #2D336B;"></i>
+                                <span class="fw-semibold">{{ notification.message }}</span>
+                            </div>
+                            <small class="text-muted">
+                                <i class="fa-regular fa-clock me-1" style="color: #2D336B;"></i> {{ notification.time }}
+                            </small>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center text-muted">
+                            <i class="fa-solid fa-bell-slash me-2" style="color: #2D336B;"></i> No new notifications
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Lottie Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.14/lottie.min.js"></script>
+<script>
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+    }
+
+    // Welcome Animation
+    const welcomeAnimation = lottie.loadAnimation({
+        container: document.getElementById('welcomeAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets9.lottiefiles.com/packages/lf20_xyadoh9h.json' // Volunteer welcome animation
+    });
+
+    // Pending Requests Animation
+    const pendingRequestsAnimation = lottie.loadAnimation({
+        container: document.getElementById('pendingRequestsAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets8.lottiefiles.com/packages/lf20_x62chJ.json' // Task management animation
+    });
+
+    // Upcoming Sessions Animation
+    const upcomingSessionsAnimation = lottie.loadAnimation({
+        container: document.getElementById('upcomingSessionsAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets5.lottiefiles.com/packages/lf20_Tjx2B9.json' // Calendar animation
+    });
+
+    // Upload Materials Animation
+    const uploadMaterialsAnimation = lottie.loadAnimation({
+        container: document.getElementById('uploadMaterialsAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets2.lottiefiles.com/packages/lf20_uJFYQh.json' // Upload animation
+    });
+
+    // Forum Animation
+    const forumAnimation = lottie.loadAnimation({
+        container: document.getElementById('forumAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets5.lottiefiles.com/packages/lf20_AXX1pE.json' // Discussion animation
+    });
+
+    // Leaderboard Animation
+    const leaderboardAnimation = lottie.loadAnimation({
+        container: document.getElementById('leaderboardAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets3.lottiefiles.com/packages/lf20_czgnxwyz.json' // Trophy/achievement animation
+    });
+
+    // Notifications Animation
+    const notificationsAnimation = lottie.loadAnimation({
+        container: document.getElementById('notificationsAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets3.lottiefiles.com/packages/lf20_Cc8Bpg.json' // Notification bell animation
+    });
+
+    // Add hover effects to animations
+    const animationContainers = document.querySelectorAll('.card-animation');
+    animationContainers.forEach(container => {
+        container.addEventListener('mouseenter', () => {
+            const animation = lottie.getRegisteredAnimations().find(anim => 
+                anim.wrapper === container.querySelector('svg')
+            );
+            if (animation) {
+                animation.setSpeed(1.5);
+            }
+        });
+
+        container.addEventListener('mouseleave', () => {
+            const animation = lottie.getRegisteredAnimations().find(anim => 
+                anim.wrapper === container.querySelector('svg')
+            );
+            if (animation) {
+                animation.setSpeed(1);
+            }
+        });
+    });
+
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropZone = document.getElementById("dropZone");
+        const fileInput = document.getElementById("fileInput");
+        const fileList = document.getElementById("fileList");
+    
+        // Click to open file dialog
+        dropZone.addEventListener("click", () => fileInput.click());
+    
+        // Handle file selection
+        fileInput.addEventListener("change", (event) => handleFiles(event.target.files));
+    
+        // Drag and Drop Events
+        dropZone.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropZone.classList.add("border-primary");
+        });
+    
+        dropZone.addEventListener("dragleave", () => dropZone.classList.remove("border-primary"));
+    
+        dropZone.addEventListener("drop", (event) => {
+            event.preventDefault();
+            dropZone.classList.remove("border-primary");
+            handleFiles(event.dataTransfer.files);
+        });
+    
+        // Handle file uploads
+        function handleFiles(files) {
+            fileList.innerHTML = ""; // Clear previous files
+            for (let file of files) {
+                const fileElement = document.createElement("div");
+                fileElement.classList.add("uploaded-file", "p-2", "d-flex", "justify-content-between", "align-items-center", "shadow-sm");
+    
+                fileElement.innerHTML = `
+                    <span><i class="fa fa-file-alt me-2"></i> ${file.name}</span>
+                    <span class="badge bg-success">${(file.size / 1024).toFixed(2)} KB</span>
+                `;
+    
+                fileList.appendChild(fileElement);
+            }
+        }
+    });
+    
+
+    function createMeetLink(sessionId) {
+        // Example Google Meet creation (replace with actual implementation)
+        let meetLink = "https://meet.google.com/new"; 
+    
+        // Here you would update the backend with the new link
+        alert("Meet link created: " + meetLink);
+    }
+    
+
+
+</script>
+{% endblock %}

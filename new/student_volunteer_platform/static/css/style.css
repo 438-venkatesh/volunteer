@@ -1,0 +1,260 @@
+/* Global Styles */
+:root {
+    --primary-color: #FFD2A0;
+    --secondary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --light-gray: #f8f9fa;
+    --dark-gray: #343a40;
+}
+
+/* Google Font: Outfit */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* Base Typography */
+body {
+   
+    line-height: 1.6;
+    color: var(--secondary-color);
+}
+body {
+    font-family: 'Outfit', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+}
+
+.nav-link {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+}
+
+p, .btn {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+}
+
+/* Navigation */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: var(--primary-color) !important;
+}
+
+/* Hero Sections */
+.hero, .about-hero, .features-hero, .contact-hero {
+    background-color: var(--light-gray);
+    padding: 80px 0;
+}
+
+/* Custom Styles */
+/* Import Outfit font */
+
+
+.hero {
+    background: #2D336B; /* Dark blue background */
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    text-align: left;
+}
+
+.hero-animation {
+    width: 100%;
+    max-height: 400px;
+}
+
+.hero .text-primary {
+    color: #2D336B !important; /* Dark Blue */
+}
+
+.hero .btn-primary {
+    background-color: #2D336B;
+    border: none;
+    padding: 12px 24px;
+}
+
+.hero .btn-primary:hover {
+    background-color: #1f274f; /* Slightly darker blue */
+}
+
+.hero .btn-outline-primary {
+    color: #2D336B;
+    border-color: #2D336B;
+    padding: 12px 24px;
+    border-width: 2px;
+}
+
+.hero .btn-outline-primary:hover {
+    background-color: #2D336B;
+    color: white !important;
+}
+
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: darken(var(--primary-color), 10%);
+    border-color: darken(var(--primary-color), 10%);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn {
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Features Section */
+.features {
+    background-color: var(--light-gray);
+}
+
+/* Footer */
+footer {
+    background-color: var(--dark-gray);
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.footer {
+    font-weight: 300;
+}
+
+/* Contact Form */
+.contact-form .form-control {
+    border: 1px solid #dee2e6;
+    padding: 0.75rem;
+}
+
+.contact-form .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero, .about-hero, .features-hero, .contact-hero {
+        padding: 40px 0;
+    }
+    
+    h1.display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .card {
+        margin-bottom: 20px;
+    }
+}
+
+
+ .cta {
+        background: linear-gradient(135deg, #007bff, #6610f2);
+        border-radius: 12px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .lottie-animation {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+    }
+
+    .btn-glow {
+        background: #ff6f61;
+        border: none;
+        padding: 12px 24px;
+        font-size: 1.2rem;
+        border-radius: 8px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-glow:hover {
+        background: #ff3b2f;
+        box-shadow: 0px 4px 12px rgba(255, 107, 107, 0.5);
+    }
+
+
+
+    /* CTA Section Styling */
+    .cta {
+        background: linear-gradient(135deg, #2D336B, #1F2455);
+        border-radius: 12px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .lottie-animation {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+    }
+
+    /* Theme Button */
+    .btn-theme {
+        background: #2D336B;
+        border: none;
+        padding: 12px 24px;
+        font-size: 1.2rem;
+        border-radius: 8px;
+        transition: all 0.3s ease-in-out;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .btn-theme:hover {
+        background: #1F2455;
+        box-shadow: 0px 4px 12px rgba(45, 51, 107, 0.5);
+    }
+
+    /* FontAwesome Icon Styling */
+    .fa-book-open, .fa-user-plus {
+        color: #FFD700;
+    }
+
+
+        /* Themed FontAwesome Icons */
+        .theme-icon {
+            color: #2D336B;
+            font-size: 1.5rem;
+        }
+    

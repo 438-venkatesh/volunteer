@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome - Student Volunteer Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Text Content -->
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    Welcome to <span style="color: #2D336B;">Student Volunteer </span>Platform
+                </h1>
+                <p class="lead opacity-75 text-black fw-semibold">
+                    Connecting students with passionate volunteer mentors for a brighter educational future.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'authentication:signup' %}" class="btn  btn-lg fw-bold"  style="background: linear-gradient(135deg, #2D336B, #1C1C1C); color: white; border-color: #2D336B;">
+                        <i class="fa-solid fa-user-plus me-2"></i> Get Started
+                    </a>
+                    <a href="{% url 'home:about' %}"  class="btn btn-outline-primary btn-lg fw-bold" 
+                    style="color: #2D336B; border-color: #2D336B;">
+                        <i class="fa-solid fa-info-circle me-2"></i> Learn More
+                    </a>
+                </div>
+            </div>
+
+            <!-- Lottie Animation -->
+            <div class="col-lg-6">
+                <lottie-player
+                    src="https://assets3.lottiefiles.com/packages/lf20_DMgKk1.json"
+                    background="transparent"
+                    speed="1"
+                    class="hero-animation"
+                    loop
+                    autoplay>
+                </lottie-player>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold" style="font-family: 'Outfit', sans-serif;">
+            Our <span style="color: #2D336B;">Features</span>
+        </h2>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <lottie-player
+                            src="https://assets3.lottiefiles.com/packages/lf20_5tl1xxnz.json"
+                            background="transparent"
+                            speed="1"
+                            style="width: 200px; height: 200px; margin: 0 auto;"
+                            loop
+                            autoplay>
+                        </lottie-player>
+                        <h3 class="h5 mt-3 fw-bold">One-on-One Mentoring</h3>
+                        <p class="lead opacity-75 text-black fw-semibold">Connect with experienced mentors for personalized guidance </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <lottie-player
+                            src="https://assets3.lottiefiles.com/packages/lf20_kq5rGs.json"
+                            background="transparent"
+                            speed="1"
+                            style="width: 200px; height: 200px; margin: 0 auto;"
+                            loop
+                            autoplay>
+                        </lottie-player>
+                        <h3 class="h5 mt-3 fw-bold">Study Materials</h3>
+                        <p class="lead opacity-75 text-black fw-semibold">Access a wide range of curated study materials and resources.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <lottie-player
+                            src="https://assets3.lottiefiles.com/packages/lf20_DMgKk1.json"
+                            background="transparent"
+                            speed="1"
+                            style="width: 200px; height: 200px; margin: 0 auto;"
+                            loop
+                            autoplay>
+                        </lottie-player>
+                        <h3 class="h5 mt-3 fw-bold">Interactive Forums</h3>
+                        <p class="lead opacity-75 text-black fw-semibold">Engage in discussions and learn from the community.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta py-5 text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Animation Section -->
+            <div class="col-md-6 text-center">
+                <lottie-player
+                    src="https://assets3.lottiefiles.com/packages/lf20_jcikwtux.json"
+                    background="transparent"
+                    speed="1"
+                    class="lottie-animation"
+                    loop
+                    autoplay>
+                </lottie-player>
+            </div>
+
+            <!-- Content Section -->
+            <div class="col-md-6 text-center text-md-start ">
+                <h2 class="fw-bold text-black"><i class="fas fa-book-open me-2" style="color: #2D336B;"></i> Ready to Start Learning?</h2>
+                <p class="lead opacity-75 text-black fw-semibold">
+                    Join our platform today and connect with volunteer mentors who are passionate about helping you succeed.
+                </p>
+                <a href="{% url 'authentication:signup' %}" 
+                class="btn fw-bold px-4 py-2" 
+                style="background: linear-gradient(135deg, #2D336B, #1C1C1C); color: white; border-radius: 8px;">
+                <i class="fas fa-user-plus me-2" style="color: white;"></i> Sign Up Now
+             </a>
+             
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
